@@ -8,7 +8,9 @@ namespace ConsoleApp25
         {
             //task1();
             //task2("hello", "bye");
-            Moderator("start.txt", "end.txt");
+            //Moderator("start.txt", "end.txt");
+            //task4("start.txt");
+            task5("task5.txt");
         }
 
         static void task1()
@@ -32,6 +34,8 @@ namespace ConsoleApp25
 
             File.WriteAllLines("fibonacci.txt", fibonacciList.ConvertAll(n => n.ToString()));
 
+            
+
         }
 
         static void task2(string input, string change)
@@ -53,6 +57,34 @@ namespace ConsoleApp25
                 words1 = words1.Replace(word, stars);
             }
             File.WriteAllText(path1, words1);
+        }
+
+        static void task4(string path)
+        {
+            string content = File.ReadAllText(path);
+            char[] cArr = content.ToCharArray();
+            Array.Reverse(cArr);
+            string reversed = new string (cArr);
+
+            File.WriteAllText("new.txt", reversed);
+        }
+
+        static void task5(string path) 
+        {
+            fillTheFile(path);
+            int[] numbers = File.ReadAllLines(path).Select(int.Parse).ToArray();
+            bool isTwoDigit(int n) => n.ToString().Trim('-').Length == 2;
+            bool isFiveDigit(int n) => n.ToString().Trim('-').Length == 5;
+
+            var positive = numbers.Where(n => n > 0).ToArray(); 
+            var negative = numbers.Where(n => n < 0).ToArray();
+            var doubledigit = numbers.Where(isTwoDigit).ToArray();
+            var fivedigit = numbers.Where(isFiveDigit).ToArray();
+
+            File.WriteAllLines("positive.txt", positive.Select(n => n.ToString()));
+            File.WriteAllLines("negative.txt", negative.Select(n => n.ToString()));
+            File.WriteAllLines("doubledigit.txt", doubledigit.Select(n => n.ToString()));
+            File.WriteAllLines("fivedigit.txt", fivedigit.Select(n => n.ToString()));
         }
 
         static bool IsPrime(int number)
@@ -78,6 +110,17 @@ namespace ConsoleApp25
                 b = temp;
             }
             return b == number || number == 0;
+        }
+        static void fillTheFile(string path)
+        {
+            Random r = new Random();
+            List<int> list = new List<int>();
+            for (int i = 0; i < 100000; i++)
+            {
+                int number = r.Next(-100000,100001);
+                list.Add(number);
+            }
+            File.WriteAllLines(path, list.ConvertAll(n => n.ToString()));
         }
     }
 }
